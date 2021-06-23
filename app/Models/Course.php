@@ -30,6 +30,8 @@ class Course extends Model
         'status'
     ];
 
+    protected $with = array('category', 'user');
+
     public function path(){
         return "/api/courses/{$this->id}";
     }
@@ -43,7 +45,7 @@ class Course extends Model
     }
 
     public function category(){
-        return $this->hasOne(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function isOnline(){

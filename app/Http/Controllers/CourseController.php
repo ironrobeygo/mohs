@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Http\Resources\CourseResource;
 
 class CourseController extends Controller
 {
     public function index(){
-        return Course::all();
+
+        $courses = Course::latest()->get();
+        return CourseResource::collection($courses);
     }
 
     public function store(){
@@ -23,16 +26,17 @@ class CourseController extends Controller
             'updated_by'    => 'required'
         ]);
 
-        return Course::create($validated);
+        $course = Course::create($validated);
+        // $course = auth()->user()->addCourse($validated);    
 
-        // return auth()->user()->addCourse($validated);      
+        return new CourseResource($course);
+
+  
     }
 
     public function show(Course $course){
 
-        if( !$course->isOnline() ) return false;
-
-        return $course;
+        return new CourseResource($course);
 
     }
 
@@ -50,7 +54,7 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        return $course;
+        return new CourseResource($course);
 
     }
 
@@ -58,7 +62,7 @@ class CourseController extends Controller
 
         $course->delete();
 
-        return $course;
+        return new CourseResource($course);
 
     }
 }

@@ -47,6 +47,18 @@ class ModulesTest extends TestCase
     }
 
     /** @test */
+    public function can_view_a_module(){
+        $module = Module::factory()->create([
+            'course_id' => $this->course->id,
+            'user_id'   => $this->user->id
+        ]);
+
+        $response = $this->get($module->path());
+        $response->assertOk();
+
+    }
+
+    /** @test */
     public function view_all_course_modules(){
 
         $modules = Module::factory()->count(10)->create([

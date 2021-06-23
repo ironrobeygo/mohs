@@ -6,13 +6,14 @@ use App\Models\Unit;
 use App\Models\Course;
 use App\Models\Module;
 use Illuminate\Http\Request;
+use App\Http\Resources\UnitResource;
 
 class UnitController extends Controller
 {
 
     public function index(Course $course, Module $module){
 
-        return $module->units;
+        return UnitResource::collection($module->units);
 
     }
     public function store(Course $course, Module $module){
@@ -28,6 +29,12 @@ class UnitController extends Controller
         return $module->addUnit($validated);
     }
 
+    public function show(Course $course, Module $module, Unit $unit){
+
+        return new UnitResource($unit);
+
+    }
+
     public function update(Course $course, Module $module, Unit $unit){
 
         $validated = request()->validate([
@@ -39,7 +46,7 @@ class UnitController extends Controller
         ]);
 
         $unit->update($validated);
-        return $unit;
+        return new UnitResource($unit);
     }
 
     public function destroy(Course $course, Module $module, Unit $unit){

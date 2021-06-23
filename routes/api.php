@@ -16,4 +16,7 @@ Route::resource('courses/{course}/modules/{module}/quizzes/{quiz}/questions','Ap
 Route::post('courses/{course}/modules/{module}/clone', 'App\Http\Controllers\ModuleController@clone')->name('modules.clone');
 Route::post('courses/{course}/modules/{module}/units/{unit}/clone', 'App\Http\Controllers\UnitController@clone')->name('units.clone');
 
+Route::resource('categories','App\Http\Controllers\CategoryController')->except(['create', 'edit']);
 Route::resource('options','App\Http\Controllers\OptionController')->except(['create', 'edit']);
+
+Route::resource('users','App\Http\Controllers\UserController')->except(['create', 'edit']);

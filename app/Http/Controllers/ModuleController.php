@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Module;
 use Illuminate\Http\Request;
+use App\Http\Resources\ModuleResource;
 
 class ModuleController extends Controller
 {
     public function index(Course $course){
-        return $course->modules;
+        return ModuleResource::collection($course->modules);
     }
 
     public function store(Course $course){
@@ -37,7 +38,13 @@ class ModuleController extends Controller
         ]);
 
         $module->update($validated);
-        return $module;
+        return new ModuleResource($module);
+    }
+
+    public function show(Course $course, Module $module){
+
+        return new ModuleResource($module);
+
     }
 
     public function destroy(Course $course, Module $module){
